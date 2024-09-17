@@ -82,4 +82,10 @@ cp ../demod/mod/meisei100mod .
 cp ../demod/mod/imet54mod .
 cp ../demod/mod/mp3h1mod .
 
+cd ../m12/
+echo "Building m12_json"
+gcc -O2 m12.c -lm -o m12_json -w $VERS_FLAG
+cd ../auto_rx/
+cp ../m12/m12_json .
+
 echo "Done!"
