@@ -472,6 +472,12 @@ def detect_sonde(
             % (str(device_idx), _score, _offset_est)
         )
         _sonde_type = "M20"
+    elif "PILOT" in _type:
+        logging.debug(
+            "Scanner #%s - Detected a PILOT Sonde! (Not yet supported...) (Score: %.2f, Offset: %.1f Hz)"
+            % (str(device_idx), _score, _offset_est)
+        )
+        _sonde_type = "PILOT"
     elif "IMET4" in _type:
         logging.debug(
             "Scanner #%s - Detected a iMet-4 Sonde! (Score: %.2f, Offset: %.1f Hz)"
