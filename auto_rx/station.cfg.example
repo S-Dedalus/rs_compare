@@ -494,6 +494,7 @@ rs92_experimental = True
 dfm_experimental = True
 m10_experimental = True
 lms6-400_experimental = True
+pilot_experimental = False
 imet54_experimental = True
 # LMS6-1680 Decoder options:
 # False = Less CPU, possibly worse weak-signal performance.
