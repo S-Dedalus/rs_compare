@@ -4,6 +4,7 @@
 #
 #   Copyright (C) 2018  Mark Jessop <vk5qi@rfhead.net>
 #   Released under GNU GPL v3 or later
+#   modifications 2022  Vigor Geslin
 #
 import autorx
 import datetime
@@ -30,6 +31,7 @@ VALID_SONDE_TYPES = [
     "DFM",
     "M10",
     "M20",
+    "PILOT",
     "IMET",
     "IMET5",
     "MK2LMS",
@@ -108,6 +110,7 @@ class SondeDecoder(object):
         "DFM",
         "M10",
         "M20",
+        "PILOT",
         "IMET",
         "IMET5",
         "MK2LMS",
@@ -216,6 +219,8 @@ class SondeDecoder(object):
         self.imet_prev_time = None
         self.imet_prev_frame = None
 
+        #same problem pilot
+        self.pilot_id = None
         # This will become our decoder thread.
         self.decoder = None
 
@@ -475,6 +480,19 @@ class SondeDecoder(object):
 
             # M10 decoder
             decode_cmd += "./m10mod --json --ptu -vvv 2>/dev/null"
+
+        elif self.sonde_type == "PILOT":
+            # PILOT Sondes
+
+            decode_cmd = "%s %s-p %d -d %s %s-M fm -F9 -s 22k -f %d 2>/dev/null |" % (self.sdr_fm, bias_option, int(self.ppm), str(self.device_idx), gain_param, self.sonde_freq)
+            decode_cmd += "sox -t raw -r 22k -e s -b 16 -c 1 - -r 48000 -b 8 -t wav - highpass 20 2>/dev/null |"
+
+            # Add in tee command to save audio to disk if debugging is enabled.
+            if self.save_decode_audio:
+                decode_cmd += " tee decode_%s.wav |" % str(self.device_idx)
+
+            # PILOT decoder
+            decode_cmd += "./m12_json --auto --dc -v 2>/dev/null"
 
         elif self.sonde_type == "IMET":
             # iMet-4 Sondes
@@ -1399,6 +1417,14 @@ class SondeDecoder(object):
                 _telemetry["datetime"] = _telemetry["datetime_dt"].strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 )
+
+            # pilot Specific actions
+            if self.sonde_type == 'PILOT':
+
+                if self.pilot_id == None:
+                    self.pilot_id = pilot_unique_id(_telemetry)
+                
+                _telemetry['id'] = self.pilot_id
 
             # iMet-5x Specific Actions
             if self.sonde_type == "IMET5":
