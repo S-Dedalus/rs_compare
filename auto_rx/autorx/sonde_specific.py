@@ -85,6 +85,35 @@ def imet_unique_id(telemetry, custom="SONDE", imet1=False):
 
     return "IMET-" + _hash[-8:]
 
+#
+#	PILOT Radiosonde Functions
+#
+
+def pilot_unique_id(telemetry, custom="SONDE"):
+    """
+	Generate a 'unique' pilot radiosonde ID based on the power-on time, frequency, and an optional location code.
+	This requires the following fields be present in the telemetry dict:
+		datetime_dt (datetime)  (will need to be generated above)
+		frame (int) - Frame number
+		freq_float (float) - Frequency in MHz, as a floating point number.
+	"""
+
+    _pilot_dt = telemetry["datetime_dt"]
+
+    # Determine power on time: Current time -  number of frames (one frame per second)
+    _power_on_time = _pilot_dt - datetime.timedelta(seconds=telemetry["frame"])
+
+    # Round frequency to the nearest 100 kHz (iMet sondes only have 100 kHz frequency steps)
+    _freq = round(telemetry["freq_float"] * 10.0) / 10.0
+    _freq = "%.3f MHz" % _freq
+
+    # Now we generate a string to hash based on the power-on time, the rounded frequency, and the custom field.
+    _temp_str = _power_on_time.strftime("%Y-%m-%dT%H:%M:%SZ") + _freq + custom
+
+    # Calculate a SHA256 hash of the
+    _hash = hashlib.sha256(_temp_str.encode("ascii")).hexdigest().upper()
+
+    return "PILOT-" + _hash[-8:]
 
 #
 # 	DFM Sonde Subtypes
