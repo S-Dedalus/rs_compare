@@ -445,6 +445,7 @@ def read_auto_rx_config(filename, no_sdr_test=False):
             "DFM": True,
             "M10": True,
             "M20": True,
+            'PILOT': False, 
             "IMET": False,
             "IMET5": True,
             "LMS6": True,
@@ -631,6 +632,15 @@ def read_auto_rx_config(filename, no_sdr_test=False):
             )
             auto_rx_config["web_control"] = False
             auto_rx_config["web_password"] = "none"
+        try:
+            auto_rx_config["experimental_decoders"]["PILOT"] = config.getboolean(
+                "advanced", "pilot_experimental"
+            )
+        except:
+            logging.warning(
+                "Config - Did not find PILOT decoder experimental decoder setting, using default (enabled)."
+            )
+            auto_rx_config["experimental_decoders"]["PILOT"] = False
         
         try:
             auto_rx_config["save_raw_hex"] = config.getboolean(
