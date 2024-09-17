@@ -1,0 +1,11 @@
+Files ./auto_rx/auto_rx.py and ../radiosonde_auto_rx-1.5.10/auto_rx/auto_rx.py differ
+Files ./auto_rx/autorx/__init__.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/__init__.py differ
+Only in ./auto_rx/autorx: __pycache__
+Files ./auto_rx/autorx/config.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/config.py differ
+Files ./auto_rx/autorx/decode.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/decode.py differ
+Files ./auto_rx/autorx/scan.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/scan.py differ
+Files ./auto_rx/autorx/sonde_specific.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/sonde_specific.py differ
+Files ./auto_rx/autorx/sondehub.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/sondehub.py differ
+Files ./auto_rx/autorx/web.py and ../radiosonde_auto_rx-1.5.10/auto_rx/autorx/web.py differ
+Files ./auto_rx/build.sh and ../radiosonde_auto_rx-1.5.10/auto_rx/build.sh differ
+Files ./auto_rx/station.cfg.example and ../radiosonde_auto_rx-1.5.10/auto_rx/station.cfg.example differ
