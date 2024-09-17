@@ -7,6 +7,7 @@
 #   https://github.com/projecthorus/radiosonde_auto_rx/wiki/Suggested-Universal-Sonde-Telemetry-Format
 #
 #   Copyright (C) 2021  Mark Jessop <vk5qi@rfhead.net>
+#   modifications 2022  Vigor Geslin
 #   Released under GNU GPL v3 or later
 #
 import autorx
@@ -110,16 +111,18 @@ class SondehubUploader(object):
             telemetry (dict): Telemetry dictionary to add to the input queue.
 
         """
+        _telem = {}
 
-        # Attempt to reformat the data.
-        _telem = self.reformat_data(telemetry)
-        # self.log_debug("Telem: %s" % str(_telem))
+        if ('PILOT' not in telemetry["type"]):
+            # Attempt to reformat the data.
+            _telem = self.reformat_data(telemetry)
+            # self.log_debug("Telem: %s" % str(_telem))
 
         # Add it to the queue if we are running.
         if self.input_processing_running and _telem:
             self.input_queue.put(_telem)
         else:
-            self.log_debug("Processing not running, discarding.")
+            self.log_debug("Processing not running or PILOT, discarding.")
 
     def reformat_data(self, telemetry):
         """ Take an input dictionary and convert it to the universal format """
