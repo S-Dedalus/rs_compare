@@ -3,6 +3,7 @@
 #   Radiosonde Auto RX Service - V2.0
 #
 #   Copyright (C) 2018  Mark Jessop <vk5qi@rfhead.net>
+#   modifications 2022  Vigor Geslin
 #   Released under GNU GPL v3 or later
 #
 #   Refer github page for instructions on setup and usage.
@@ -204,7 +205,7 @@ def start_decoder(freq, sonde_type):
 
     Args:
         freq (float): Radiosonde frequency in Hz.
-        sonde_type (str): The radiosonde type ('RS41', 'RS92', 'DFM', 'M10, 'iMet')
+        sonde_type (str): The radiosonde type ('RS41', 'RS92', 'DFM', 'M10, 'iMet', 'PILOT')
 
     """
     global config, RS_PATH, exporter_functions, rs92_ephemeris, temporary_block_list
@@ -598,6 +599,7 @@ def telemetry_filter(telemetry):
         or ("M20" in telemetry["type"])
         or ("LMS" in telemetry["type"])
         or ("IMET" in telemetry["type"])
+        or ("PILOT" in telemetry["type"])
     ):
         return "OK"
     else:
@@ -676,7 +678,7 @@ def main():
         "--type",
         type=str,
         default=None,
-        help="Immediately start a decoder for a provided sonde type (Valid Types: RS41, RS92, DFM, M10, M20, IMET, IMET5, LMS6, MK2LMS, MEISEI, MRZ)",
+        help="Immediately start a decoder for a provided sonde type (Valid Types: RS41, RS92, DFM, M10, M20, IMET, IMET5, LMS6, MK2LMS, MEISEI, MRZ, PILOT)",
     )
     parser.add_argument(
         "-t",
